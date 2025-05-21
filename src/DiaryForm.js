@@ -41,41 +41,15 @@ const DiaryForm = ({ onAdd, editingDiary }) => {
     if (loading) return;
     setLoading(true);
     try {
-      const response = await axios.post(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "system",
-              content: `너는 감정 분석가야. 사용자가 작성한 일기 내용을 보고 감정을 하나만 추천해. 반드시 다음 중 하나로만 감정 단어 하나만 출력해:
-
-기쁨, 슬픔, 화남, 불안, 사랑, 자신감, 눈물, 피곤함, 당황, 혐오, 설렘, 불편함, 혼란, 평온함, 고민중, 위로, 무감정, 격노`
-            },
-            {
-              role: "user",
-              content: text
-            }
-          ],
-          temperature: 0.5,
-          max_tokens: 10
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`
-          }
-        }
-      );
-
-      const label = response.data.choices[0].message.content.trim();
+      const response = await axios.post("/api/emotion", { text });
+      const label = response.data.emotion?.trim();
       const mapped = emotionMap[label];
       setEmotion(mapped || "😶");
     } catch (err) {
       if (err.response?.status === 429) {
         alert("요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.");
       } else {
-        console.error("OpenAI API 오류:", err);
+        console.error("감정 분석 오류:", err);
         alert("감정 추천에 실패했습니다.");
       }
     } finally {

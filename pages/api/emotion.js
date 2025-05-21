@@ -41,7 +41,6 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-
     const emotion = data.choices?.[0]?.message?.content?.trim();
 
     if (!emotion) {

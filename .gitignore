@@ -1,0 +1,8 @@
+.env
+API.txt
+build/
+dist/
+node_modules/
+*.exe
+*.asar
+.cache/

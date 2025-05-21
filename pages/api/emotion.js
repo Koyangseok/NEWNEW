@@ -1,4 +1,4 @@
-// pages/api/emotion.js
+// src/pages/api/emotion.js
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
